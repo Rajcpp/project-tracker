@@ -40,5 +40,5 @@ def toggle_task(db: Session, project_id: int, task_id: int):
 def get_project(db: Session, project_id: int):
     return db.query(Project).filter(Project.id == project_id).first()
 
-def get_task(db: Session, project_id: int, task_id: int):
-    return db.query(Task).filter(Task.id == task_id, Task.project_id == project_id).first()
+def get_tasks(db: Session, project_id: int):
+    return db.query(Task).filter(Task.project_id == project_id).all()
