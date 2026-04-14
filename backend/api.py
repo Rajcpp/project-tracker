@@ -33,6 +33,16 @@ def get_projects(db: Session = Depends(db_functions.get_db)):
 def create_project(name: str,db: Session = Depends(db_functions.get_db)):
     return db_functions.create_project(db=db, name=name)
 
+@app.delete("/api/projects/{project_id}")
+def delete_project(project_id: int, db: Session = Depends(db_functions.get_db)):
+    success = db_functions.delete_project(db=db, project_id=project_id)
+    return {"success": success}
+
+@app.delete("/api/projects/{project_id}/tasks/{task_id}")
+def delete_task(project_id: int, task_id: int, db: Session = Depends(db_functions.get_db)):
+    success = db_functions.delete_task(db=db, project_id=project_id, task_id=task_id)
+    return {"success": success}
+
 @app.post("/api/projects/{project_id}/tasks")
 def create_task( project_id: int, title: str, db: Session = Depends(db_functions.get_db)):
     return db_functions.create_task(db=db, project_id=project_id, title=title)

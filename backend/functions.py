@@ -42,3 +42,19 @@ def get_project(db: Session, project_id: int):
 
 def get_tasks(db: Session, project_id: int):
     return db.query(Task).filter(Task.project_id == project_id).all()
+
+def delete_project(db: Session, project_id: int):
+    project = db.query(Project).filter(Project.id == project_id).first()
+    if project:
+        db.delete(project)
+        db.commit()
+        return True
+    return False
+
+def delete_task(db: Session, project_id: int, task_id: int):
+    task = db.query(Task).filter(Task.id == task_id, Task.project_id == project_id).first()
+    if task:
+        db.delete(task)
+        db.commit()
+        return True
+    return False
