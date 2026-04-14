@@ -1,35 +1,24 @@
-import fastapi as FastAPI
-from struct import Project, Task
-
+from fastapi import FastAPI, Depends
+from backend.struct import Project, Task
+import backend.functions as db_functions
+from database.setup import SessionLocal
+from sqlalchemy.orm import Session
 app = FastAPI()
 
 projects: list[Project] = []
 
 @app.get("/projects")
-def get_projects():
-    return projects
+def get_projects(db: Session = Depends(db_functions.get_db)):
+    return db_functions.get_projects(db)
 
 @app.post("/projects")
-def create_project(name: str):
-    project = Project(id=len(projects) + 1, name=name, tasks=[])
-    projects.append(project)
-    return project
+def create_project(name: str,db: Session = Depends(db_functions.get_db)):
+    return db_functions.create_project(db=db, name=name)
 
 @app.post("/projects/{project_id}/tasks")
-def create_task(project_id: int, title: str):
-    for project in projects:
-        if project.id == project_id:
-            task = Task(id=len(project.tasks) + 1, title=title, completed=False)
-            project.tasks.append(task)
-            return task
-    return {"error": "Project not found"}
+def create_task( project_id: int, title: str, db: Session = Depends(db_functions.get_db)):
+    return db_functions.create_task(db=db, project_id=project_id, title=title)
 
 @app.put("/projects/{project_id}/tasks/{task_id}")
-def toggle_task(project_id: int, task_id: int):
-    for project in projects:
-        if project.id == project_id:
-            for task in project.tasks:
-                if task.id == task_id:
-                    task.completed = not task.completed
-                    return task
-    return {"error": "Project or Task not found"}
+def toggle_task(project_id: int, task_id: int, db: Session = Depends(db_functions.get_db)):
+    return db_functions.toggle_task(db=db, project_id=project_id, task_id=task_id)
