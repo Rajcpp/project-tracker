@@ -1,9 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Tracker</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-    <h1>It works</h1>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">
+                    <span class="logo-icon">◆</span>
+                    <span class="logo-text">Tracker</span>
+                </h1>
+                <div class="header-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="total-projects">0</span>
+                        <span class="stat-label">Projects</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="total-tasks">0</span>
+                        <span class="stat-label">Tasks</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Sidebar: Project List -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h2 class="sidebar-title">Projects</h2>
+                    <button class="btn btn-add" id="add-project-btn">
+                        <span class="btn-icon">+</span>
+                        New
+                    </button>
+                </div>
+
+                <!-- New Project Form (Initially Hidden) -->
+                <div class="new-project-form hidden" id="new-project-form">
+                    <input 
+                        type="text" 
+                        class="input" 
+                        id="new-project-input" 
+                        placeholder="Project name..."
+                        autocomplete="off"
+                    >
+                    <div class="form-actions">
+                        <button class="btn btn-primary btn-sm" id="save-project-btn">Create</button>
+                        <button class="btn btn-ghost btn-sm" id="cancel-project-btn">Cancel</button>
+                    </div>
+                </div>
+
+                <!-- Projects List -->
+                <div class="projects-list" id="projects-list">
+                    <!-- Projects will be inserted here by JS -->
+                </div>
+            </aside>
+
+            <!-- Content Area: Task List -->
+            <section class="content">
+                <!-- Empty State -->
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-icon">📋</div>
+                    <h2 class="empty-title">No project selected</h2>
+                    <p class="empty-text">Select a project from the sidebar or create a new one to get started</p>
+                </div>
+
+                <!-- Project View (Initially Hidden) -->
+                <div class="project-view hidden" id="project-view">
+                    <div class="project-header">
+                        <h2 class="project-title" id="current-project-title">Project Name</h2>
+                        <button class="btn btn-add" id="add-task-btn">
+                            <span class="btn-icon">+</span>
+                            Add Task
+                        </button>
+                    </div>
+
+                    <!-- New Task Form (Initially Hidden) -->
+                    <div class="new-task-form hidden" id="new-task-form">
+                        <input 
+                            type="text" 
+                            class="input" 
+                            id="new-task-input" 
+                            placeholder="What needs to be done?"
+                            autocomplete="off"
+                        >
+                        <div class="form-actions">
+                            <button class="btn btn-primary btn-sm" id="save-task-btn">Add Task</button>
+                            <button class="btn btn-ghost btn-sm" id="cancel-task-btn">Cancel</button>
+                        </div>
+                    </div>
+
+                    <!-- Tasks List -->
+                    <div class="tasks-list" id="tasks-list">
+                        <!-- Tasks will be inserted here by JS -->
+                    </div>
+
+                    <!-- Tasks Empty State -->
+                    <div class="tasks-empty hidden" id="tasks-empty">
+                        <p class="tasks-empty-text">No tasks yet. Add one to get started!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/js/script.js"></script>
 </body>
 </html>
