@@ -87,6 +87,11 @@ function hideEmptyState() {
     document.getElementById('project-view').classList.remove('hidden');
 }
 
+function showEmptyState() {
+    document.getElementById('empty-state').classList.remove('hidden');
+    document.getElementById('project-view').classList.add('hidden');
+}
+
 function CurrentprojectNameRender() {
     document.getElementById("current-project-title").textContent = currentProject.name;
 }
