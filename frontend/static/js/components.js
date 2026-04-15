@@ -23,8 +23,8 @@ export function renderTaskList(tasks) {
         taskItem.dataset.taskId = task.id;
         taskItem.className = 'task-item';
         taskItem.textContent = `${task.title}`;
-        if (task.status === 'completed') {
-            taskItem.classList.toggle('completed');
+        if (task.completed == true) {
+            taskItem.classList.add('completed');
         }
         task_list.appendChild(taskItem);
     });
