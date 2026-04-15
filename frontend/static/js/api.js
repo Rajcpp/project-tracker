@@ -56,8 +56,8 @@ export async function createTask(projectId, taskName) {
 }
 
 export async function updateTaskStatus(projectId, taskId) {
-    console.log(`Updating task status for Task ID: ${taskId} in Project ID: ${projectId}`);
-    console.log(`url: /api/projects/${projectId}/tasks/${taskId}`);
+    //console.log(`Updating task status for Task ID: ${taskId} in Project ID: ${projectId}`);
+    //console.log(`url: /api/projects/${projectId}/tasks/${taskId}`);
     try {
         const response = await fetch(`/api/projects/${projectId}/tasks/${taskId}`, {
             method: 'PUT',
@@ -71,6 +71,40 @@ export async function updateTaskStatus(projectId, taskId) {
     }
     catch (error) {
         console.error('Error updating task status:', error);
+        throw error;
+    }
+}
+
+export async function deleteProject(projectId) {
+    try {
+        const response = await fetch(`/api/projects/${projectId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        return data;
+    }
+    catch (error) {
+        console.error('Error deleting project:', error);
+        throw error;
+    }
+}
+
+export async function deleteTask(projectId, taskId) {
+    try {
+        const response = await fetch(`/api/projects/${projectId}/tasks/${taskId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        return data;
+    }
+    catch (error) {
+        console.error('Error deleting task:', error);
         throw error;
     }
 }

@@ -19,10 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 project_list.addEventListener("click", (event) => {
-  if (event.target.classList.contains("project-item")) {
-    const projectId = event.target.dataset.projectId;
+  // Handle project item click (not delete button)
+  const projectItem = event.target.closest('.project-item');
+  if (projectItem && !event.target.classList.contains('delete-btn') && !projectItem.classList.contains('confirming')) {
+    const projectId = projectItem.dataset.projectId;
     currentProject.id = projectId;
-    currentProject.name = event.target.dataset.projectName;
+    currentProject.name = projectItem.dataset.projectName;
 
     hideEmptyState();
     CurrentprojectNameRender();
@@ -33,21 +35,25 @@ project_list.addEventListener("click", (event) => {
   }
 });
 
-task_list.addEventListener("change", (event) => {
-  if (event.target.matches("input[type='checkbox']")) {
-    let taskId = event.target.dataset.taskId;
-    let projectId = currentProject.id;
-    if (taskId !== undefined) {
-      console.log(`Task ID: ${taskId}, Checked: ${event.target.checked}`);
-      updateTaskStatus(projectId, taskId).then((updatedTask) => {
-        console.log(`Updated Task: ${JSON.stringify(updatedTask)}`);
-        // Optionally, you can update the task status in the UI immediately
-        fetchProjectTasks(currentProject.id).then((task_list) => {
-          renderTaskList(task_list);
+task_list.addEventListener("click", (event) => {
+  // Handle checkbox click
+  const checkbox = event.target.closest('.task-checkbox');
+  if (checkbox && !event.target.classList.contains('delete-btn')) {
+    const taskItem = checkbox.closest('.task-item');
+    if (!taskItem.classList.contains('confirming')) {
+      let taskId = checkbox.dataset.taskId;
+      let projectId = currentProject.id;
+      if (taskId !== undefined) {
+        console.log(`Task ID: ${taskId}`);
+        updateTaskStatus(projectId, taskId).then((updatedTask) => {
+          console.log(`Updated Task: ${JSON.stringify(updatedTask)}`);
+          fetchProjectTasks(currentProject.id).then((task_list) => {
+            renderTaskList(task_list);
+          });
         });
-      });
-    } else {
-      console.error("Task ID not found in dataset");
+      } else {
+        console.error("Task ID not found in dataset");
+      }
     }
   }
 });

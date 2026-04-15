@@ -9,7 +9,22 @@ export function renderProjectList(projects) {
         projectItem.dataset.projectId = project.id;
         projectItem.dataset.projectName = project.name;
         projectItem.className = 'project-item';
-        projectItem.textContent = project.name;
+        
+        // Create project content wrapper
+        const projectContent = document.createElement('div');
+        projectContent.className = 'project-content';
+        projectContent.textContent = project.name;
+        
+        // Create delete button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.innerHTML = '🗑️';
+        deleteBtn.dataset.projectId = project.id;
+        deleteBtn.dataset.projectName = project.name;
+        deleteBtn.setAttribute('aria-label', 'Delete project');
+        
+        projectItem.appendChild(projectContent);
+        projectItem.appendChild(deleteBtn);
         project_list.appendChild(projectItem);
     });
 }
@@ -21,28 +36,43 @@ export function renderTaskList(tasks) {
     UpdateTotalTasks(uncompletedCount);
     tasks.forEach(task => {
         const taskItem = document.createElement('li');
-        const taskTitle = document.createElement('span');
-        const checkBox = document.createElement('input');
-
-        checkBox.type = 'checkbox';
-        checkBox.className = 'task-checkbox';
-
-        checkBox.checked = task.completed;
-        taskTitle.textContent = task.title;
-
-        taskTitle.className = 'task-title';
-
-        taskItem.appendChild(taskTitle);
-        taskItem.appendChild(checkBox);
-
-        checkBox.dataset.taskId = task.id;
-        console.log(`${checkBox.dataset.taskId}`);
-
         taskItem.className = 'task-item';
         if (task.completed == true) {
             taskItem.classList.add('completed');
         }
-
+        
+        // Create task content wrapper
+        const taskContent = document.createElement('div');
+        taskContent.className = 'task-content';
+        
+        const checkBox = document.createElement('div');
+        checkBox.className = 'task-checkbox';
+        checkBox.dataset.taskId = task.id;
+        
+        if (task.completed) {
+            const checkMark = document.createElement('span');
+            checkMark.className = 'task-checkbox-check';
+            checkMark.textContent = '✓';
+            checkBox.appendChild(checkMark);
+        }
+        
+        const taskTitle = document.createElement('span');
+        taskTitle.textContent = task.title;
+        taskTitle.className = 'task-title';
+        
+        taskContent.appendChild(checkBox);
+        taskContent.appendChild(taskTitle);
+        
+        // Create delete button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.innerHTML = '🗑️';
+        deleteBtn.dataset.taskId = task.id;
+        deleteBtn.dataset.taskTitle = task.title;
+        deleteBtn.setAttribute('aria-label', 'Delete task');
+        
+        taskItem.appendChild(taskContent);
+        taskItem.appendChild(deleteBtn);
         task_list.appendChild(taskItem);
     });
 }

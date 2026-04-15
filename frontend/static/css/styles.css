@@ -225,17 +225,6 @@ body {
     transform: scaleY(1);
 }
 
-.project-name {
-    font-weight: 600;
-    color: var(--color-text-primary);
-    margin-bottom: var(--space-xs);
-}
-
-.project-meta {
-    font-size: 0.813rem;
-    color: var(--color-text-muted);
-}
-
 /* ===== Content Area ===== */
 .content {
     background: var(--color-bg-elevated);
@@ -310,9 +299,6 @@ body {
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     padding: var(--space-lg);
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
     transition: all var(--transition-base);
     cursor: pointer;
 }
@@ -366,12 +352,6 @@ body {
 .task-item.completed .task-checkbox-check {
     opacity: 1;
     transform: scale(1);
-}
-
-.task-title {
-    flex: 1;
-    font-weight: 500;
-    color: var(--color-text-primary);
 }
 
 /* ===== Tasks Empty State ===== */
@@ -498,6 +478,162 @@ body {
 /* ===== Utility Classes ===== */
 .hidden {
     display: none !important;
+}
+
+/* ===== Delete Button Styles ===== */
+.delete-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: var(--space-xs);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.125rem;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.project-item:hover .delete-btn,
+.task-item:hover .delete-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.delete-btn:hover {
+    background: rgba(255, 107, 107, 0.1);
+    color: var(--color-accent);
+}
+
+.delete-btn:active {
+    transform: scale(0.9);
+}
+
+/* ===== Confirmation State Styles ===== */
+.project-item.confirming,
+.task-item.confirming {
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.15) 0%, rgba(255, 107, 107, 0.05) 100%);
+    border-color: var(--color-accent);
+    transform: translateX(0);
+}
+
+.project-item.confirming::before,
+.task-item.confirming::before {
+    background: var(--color-accent);
+    transform: scaleY(1);
+}
+
+.confirm-delete {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: var(--space-md);
+    animation: slideIn var(--transition-base);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.confirm-text {
+    flex: 1;
+    color: var(--color-accent);
+    font-weight: 600;
+    font-size: 0.938rem;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: var(--space-sm);
+    flex-shrink: 0;
+}
+
+.btn-confirm {
+    background: var(--color-accent);
+    color: white;
+    padding: var(--space-xs) var(--space-md);
+    font-size: 0.813rem;
+}
+
+.btn-confirm:hover {
+    background: var(--color-accent-hover);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.btn-cancel-delete {
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    padding: var(--space-xs) var(--space-md);
+    font-size: 0.813rem;
+    border: 1px solid var(--color-border);
+}
+
+.btn-cancel-delete:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-text-primary);
+    border-color: var(--color-border-light);
+}
+
+/* ===== Project Item Layout for Delete Button ===== */
+.project-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+}
+
+.project-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.project-name {
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-xs);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.project-meta {
+    font-size: 0.813rem;
+    color: var(--color-text-muted);
+}
+
+/* ===== Task Item Layout Enhancement ===== */
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.task-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    min-width: 0;
+}
+
+.task-title {
+    flex: 1;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* ===== Scrollbar ===== */
