@@ -56,6 +56,8 @@ export async function createTask(projectId, taskName) {
 }
 
 export async function updateTaskStatus(projectId, taskId) {
+    console.log(`Updating task status for Task ID: ${taskId} in Project ID: ${projectId}`);
+    console.log(`url: /api/projects/${projectId}/tasks/${taskId}`);
     try {
         const response = await fetch(`/api/projects/${projectId}/tasks/${taskId}`, {
             method: 'PUT',

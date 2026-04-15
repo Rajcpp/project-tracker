@@ -17,7 +17,8 @@ export function renderProjectList(projects) {
 export function renderTaskList(tasks) {
     const task_list = document.getElementById('tasks-list');
     task_list.innerHTML = '';
-    UpdateTotalTasks(tasks.length);
+    let uncompletedCount = tasks.filter(task => !task.completed).length;
+    UpdateTotalTasks(uncompletedCount);
     tasks.forEach(task => {
         const taskItem = document.createElement('li');
         const taskTitle = document.createElement('span');
