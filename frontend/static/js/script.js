@@ -29,6 +29,7 @@ project_list.addEventListener('click', (event) => {
 task_list.addEventListener('change', (event) => {
     if (event.target.matches("input[type='checkbox']")) {
         const taskId = event.target.dataset.taskId;
+        console.log(`Task ID: ${taskId}, Checked: ${event.target.checked}`);
         updateTaskStatus(taskId).then(updatedTask => {
             // Optionally, you can update the task status in the UI immediately
             renderTaskList(task_list);

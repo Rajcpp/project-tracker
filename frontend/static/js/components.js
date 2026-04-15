@@ -35,6 +35,7 @@ export function renderTaskList(tasks) {
         taskItem.appendChild(checkBox);
 
         checkBox.dataset.taskId = task.id;
+        console.log(`${checkBox.dataset.taskId}`);
 
         taskItem.className = 'task-item';
         if (task.completed == true) {
