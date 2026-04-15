@@ -24,7 +24,7 @@ export function renderTaskList(tasks) {
         taskItem.className = 'task-item';
         taskItem.textContent = `${task.title}`;
         if (task.status === 'completed') {
-            taskItem.classList.add('completed');
+            taskItem.classList.toggle('completed');
         }
         task_list.appendChild(taskItem);
     });
