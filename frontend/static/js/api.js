@@ -55,14 +55,14 @@ export async function createTask(projectId, taskName) {
     }
 }
 
-async function updateTaskStatus(taskId) {
+export async function updateTaskStatus(projectId, taskId) {
     try {
         const response = await fetch(`/api/projects/${projectId}/tasks/${taskId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ taskId })
+            body: JSON.stringify({ task_id: taskId })
         });
         const data = await response.json();
         return data;

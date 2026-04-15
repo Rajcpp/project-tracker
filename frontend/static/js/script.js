@@ -1,4 +1,4 @@
-import { fetchProjects, fetchProjectTasks} from './api.js';
+import { fetchProjects, fetchProjectTasks, updateTaskStatus} from './api.js';
 import { hideEmptyState, showEmptyState, currentProject, CurrentprojectNameRender, renderProjectList, renderTaskList } from './components.js';
 
 const project_list = document.getElementById('projects-list');
@@ -22,6 +22,16 @@ project_list.addEventListener('click', (event) => {
         fetchProjectTasks(projectId).then(tasks => {
             task_list.innerHTML = '';
             renderTaskList(tasks);
+        });
+    }
+});
+
+task_list.addEventListener('change', (event) => {
+    if (event.target.matches("input[type='checkbox']")) {
+        const taskId = event.target.dataset.taskId;
+        updateTaskStatus(taskId).then(updatedTask => {
+            // Optionally, you can update the task status in the UI immediately
+            renderTaskList(task_list);
         });
     }
 });

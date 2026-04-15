@@ -20,12 +20,27 @@ export function renderTaskList(tasks) {
     UpdateTotalTasks(tasks.length);
     tasks.forEach(task => {
         const taskItem = document.createElement('li');
-        taskItem.dataset.taskId = task.id;
+        const taskTitle = document.createElement('span');
+        const checkBox = document.createElement('input');
+
+        checkBox.type = 'checkbox';
+        checkBox.className = 'task-checkbox';
+
+        checkBox.checked = task.completed;
+        taskTitle.textContent = task.title;
+
+        taskTitle.className = 'task-title';
+
+        taskItem.appendChild(taskTitle);
+        taskItem.appendChild(checkBox);
+
+        checkBox.dataset.taskId = task.id;
+
         taskItem.className = 'task-item';
-        taskItem.textContent = `${task.title}`;
         if (task.completed == true) {
             taskItem.classList.add('completed');
         }
+
         task_list.appendChild(taskItem);
     });
 }
