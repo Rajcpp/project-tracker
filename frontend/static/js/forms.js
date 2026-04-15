@@ -10,12 +10,12 @@ document.getElementById('add-task-btn').addEventListener('click', () => {
 });
 
 document.getElementById('cancel-project-btn').addEventListener('click', () => {
-    document.getElementById('project-name').value = '';
+    document.getElementById('new-project-input').value = '';
     hideProjectForm();
 });
 
 document.getElementById('cancel-task-btn').addEventListener('click', () => {
-    document.getElementById('task-name').value = '';
+    document.getElementById('new-task-input').value = '';
     hideTaskForm();
 });
 

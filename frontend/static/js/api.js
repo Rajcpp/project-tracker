@@ -44,7 +44,7 @@ export async function createTask(projectId, taskName) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({name: taskName })
+            body: JSON.stringify({title: taskName })
         });
         const data = await response.json();
         return data;
