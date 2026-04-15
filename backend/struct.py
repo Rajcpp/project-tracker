@@ -10,3 +10,9 @@ class Project(BaseModel):
     id: int
     name: str
     tasks: List[Task] = []
+
+class TaskCreate(BaseModel):
+    title: str
+
+class ProjectCreate(BaseModel):
+    name: str

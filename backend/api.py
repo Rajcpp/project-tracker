@@ -5,6 +5,7 @@ from fastapi.templating import Jinja2Templates
 import backend.functions as db_functions
 from database.setup import SessionLocal
 from sqlalchemy.orm import Session
+from backend.struct import TaskCreate, ProjectCreate
 
 app = FastAPI()
 import os
@@ -30,8 +31,8 @@ def get_projects(db: Session = Depends(db_functions.get_db)):
     return db_functions.get_projects(db)
 
 @app.post("/api/projects")
-def create_project(name: str,db: Session = Depends(db_functions.get_db)):
-    return db_functions.create_project(db=db, name=name)
+def create_project(project: ProjectCreate, db: Session = Depends(db_functions.get_db)):
+    return db_functions.create_project(db=db, name=project.name)
 
 @app.delete("/api/projects/{project_id}")
 def delete_project(project_id: int, db: Session = Depends(db_functions.get_db)):
@@ -44,8 +45,8 @@ def delete_task(project_id: int, task_id: int, db: Session = Depends(db_function
     return {"success": success}
 
 @app.post("/api/projects/{project_id}/tasks")
-def create_task( project_id: int, title: str, db: Session = Depends(db_functions.get_db)):
-    return db_functions.create_task(db=db, project_id=project_id, title=title)
+def create_task(project_id: int, task: TaskCreate, db: Session = Depends(db_functions.get_db)):
+    return db_functions.create_task(db=db, project_id=project_id, title=task.title)
 
 @app.get("/api/projects/{project_id}")
 def get_tasks(project_id: int, db: Session = Depends(db_functions.get_db)):
