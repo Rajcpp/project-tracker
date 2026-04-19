@@ -89,7 +89,7 @@ function showProjectConfirmation(projectItem, projectId, projectName) {
   confirmBtn.addEventListener("click", async (e) => {
     e.stopPropagation();
     try {
-      await deleteProject(projectId);
+      let isdeleted = await deleteProject(projectId);
 
       // If deleted project was selected, show empty state
       if (currentProject.id == projectId) {
@@ -97,10 +97,14 @@ function showProjectConfirmation(projectItem, projectId, projectName) {
         currentProject.id = null;
         currentProject.name = null;
       }
-
-      // Re-fetch and render projects
-      const projects = await fetchProjects();
-      renderProjectList(projects);
+      if (isdeleted.success) {
+        // immediately remove the project from the list without re-fetching
+        projectItem.remove();
+      } else {
+        // Re-fetch and render projects
+        const projects = await fetchProjects();
+        renderProjectList(projects);
+      }
     } catch (error) {
       console.error("Error deleting project:", error);
       // Restore original content on error
@@ -156,11 +160,16 @@ function showTaskConfirmation(taskItem, taskId, taskTitle) {
   confirmBtn.addEventListener("click", async (e) => {
     e.stopPropagation();
     try {
-      await deleteTask(currentProject.id, taskId);
+      let isdeleted = await deleteTask(currentProject.id, taskId);
 
-      // Re-fetch and render tasks
-      const tasks = await fetchProjectTasks(currentProject.id);
-      renderTaskList(tasks);
+      if (isdeleted.success) {
+        // immediately remove the task from the list without re-fetching
+        taskItem.remove();
+      } else {
+        // Re-fetch and render tasks
+        const tasks = await fetchProjectTasks(currentProject.id);
+        renderTaskList(tasks);
+      }
     } catch (error) {
       console.error("Error deleting task:", error);
       // Restore original content on error
