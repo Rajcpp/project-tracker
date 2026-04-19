@@ -6,6 +6,8 @@ import {
   CurrentprojectNameRender,
   renderProjectList,
   renderTaskList,
+  addProject,
+  addTask,
 } from "./components.js";
 
 const project_list = document.getElementById("projects-list");

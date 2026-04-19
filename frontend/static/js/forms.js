@@ -1,48 +1,67 @@
-import { createProject, createTask, fetchProjectTasks, fetchProjects } from "./api.js";
-import { showProjectForm, showTaskForm, currentProject, renderProjectList, renderTaskList, hideProjectForm, hideTaskForm } from "./components.js";
+import {
+    createProject,
+    createTask,
+    fetchProjectTasks,
+    fetchProjects,
+} from "./api.js";
+import {
+    showProjectForm,
+    showTaskForm,
+    currentProject,
+    renderProjectList,
+    renderTaskList,
+    hideProjectForm,
+    hideTaskForm,
+    addProject,
+    addTask,
+} from "./components.js";
 
-document.getElementById('add-project-btn').addEventListener('click', () => {
+document.getElementById("add-project-btn").addEventListener("click", () => {
     showProjectForm();
 });
 
-document.getElementById('add-task-btn').addEventListener('click', () => {
+document.getElementById("add-task-btn").addEventListener("click", () => {
     showTaskForm();
 });
 
-document.getElementById('cancel-project-btn').addEventListener('click', () => {
-    document.getElementById('new-project-input').value = '';
+document.getElementById("cancel-project-btn").addEventListener("click", () => {
+    document.getElementById("new-project-input").value = "";
     hideProjectForm();
 });
 
-document.getElementById('cancel-task-btn').addEventListener('click', () => {
-    document.getElementById('new-task-input').value = '';
+document.getElementById("cancel-task-btn").addEventListener("click", () => {
+    document.getElementById("new-task-input").value = "";
     hideTaskForm();
 });
 
-document.getElementById('save-project-btn').addEventListener('click', () => {
-    const projectName = document.getElementById('new-project-input').value.trim();
+document.getElementById("save-project-btn").addEventListener("click", () => {
+    const projectName = document.getElementById("new-project-input").value.trim();
     if (projectName) {
-        createProject(projectName).then(newProject => {
-            // Optionally, you can add the new project to the UI immediately
-            document.getElementById('new-project-input').value = '';
-            // You might want to refresh the project list here
-            fetchProjects().then(projects => {
+        let createdProject = await createProject(projectName);
+        document.getElementById("new-project-input").value = "";
+        if (createdProject) {
+            addProject(createdProject);
+        } else {
+            // Optionally, you can refresh the project list if the API doesn't return the created project
+            fetchProjects().then((projects) => {
                 renderProjectList(projects);
             });
-        });
+        }
     }
 });
 
-document.getElementById('save-task-btn').addEventListener('click', () => {
-    const taskName = document.getElementById('new-task-input').value.trim();
+document.getElementById("save-task-btn").addEventListener("click", () => {
+    const taskName = document.getElementById("new-task-input").value.trim();
     if (taskName && currentProject.id) {
-        createTask(currentProject.id, taskName).then(newTask => {
-            // Optionally, you can add the new task to the UI immediately
-            document.getElementById('new-task-input').value = '';
-            // You might want to refresh the task list here
-            fetchProjectTasks(currentProject.id).then(tasks => {
+        let createdTask = await createTask(currentProject.id, taskName);
+        document.getElementById("new-task-input").value = "";
+        if (createdTask) {
+            addTask(createdTask);
+        } else {
+            // Optionally, you can refresh the task list if the API doesn't return the created task
+            fetchProjectTasks(currentProject.id).then((tasks) => {
                 renderTaskList(tasks);
             });
-        });
-    }   
+        }
+    }
 });
