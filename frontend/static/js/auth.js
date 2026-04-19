@@ -36,6 +36,20 @@ export function getToken() {
     return localStorage.getItem("token");
 }
 
-export function isAuthenticated() {
-    return !!getToken();
+export async function checkAuth() {
+    const token = localStorage.getItem("token");
+    if (!token) return false;
+
+    const res = await fetch("/api/auth/me", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+    let data = await res.json();
+    if (data.id) {
+        return true;
+    } else {
+        localStorage.removeItem("token");
+        return false;
+    }
 }

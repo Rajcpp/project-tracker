@@ -29,18 +29,27 @@ def startup_event():
 
 @app.get("/", response_class=HTMLResponse)
 def read_root(request: Request):
-    if get_current_user(request.cookies.get("token")) is None:
         return templates.TemplateResponse(
+        request=request,
+        name="login.html",
+        context={"request": request}
+        )
+
+@app.get("/app",response_class=HTMLResponse)
+def read_app(request: Request):
+    return templates.TemplateResponse(
         request=request,
         name="index.html",
         context={"request": request}
-        )
-    else:
-        return templates.TemplateResponse(
+    )
+
+@app.get("/register", response_class=HTMLResponse)
+def read_register(request: Request):
+    return templates.TemplateResponse(
         request=request,
         name="register.html",
         context={"request": request}
-        )
+    )
 
 @app.get("/api/projects")
 def get_projects(db: Session = Depends(db_functions.get_db), user_id: int = Depends(get_current_user)):

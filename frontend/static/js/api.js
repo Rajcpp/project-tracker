@@ -1,4 +1,4 @@
-import { getToken } from "./auth";
+import { getToken } from "./auth.js";
 
 export async function fetchProjects() {
     try {

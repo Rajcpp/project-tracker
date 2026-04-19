@@ -101,6 +101,7 @@ export function addTask(task) {
     deleteBtn.dataset.taskTitle = task.title;
     deleteBtn.setAttribute('aria-label', 'Delete task');
     
+    const task_list = document.getElementById('tasks-list');
     taskItem.appendChild(taskContent);
     taskItem.appendChild(deleteBtn);
     task_list.appendChild(taskItem);
@@ -125,6 +126,7 @@ export function addProject(project) {
     deleteBtn.dataset.projectName = project.name;
     deleteBtn.setAttribute('aria-label', 'Delete project');
     
+    const project_list = document.getElementById('projects-list');
     projectItem.appendChild(projectContent);
     projectItem.appendChild(deleteBtn);
     project_list.appendChild(projectItem);

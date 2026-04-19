@@ -9,13 +9,14 @@ import {
   addProject,
   addTask,
 } from "./components.js";
+import { getToken, checkAuth } from "./auth.js";
 
 const project_list = document.getElementById("projects-list");
 const task_list = document.getElementById("tasks-list");
 
-onload = () => {
-  if (!localStorage.getItem("token")) {
-    window.location.href = "/login";
+onload = async () => {
+  if (!(await checkAuth())) {
+    window.location.href = "/";
   }
 };
 
@@ -43,7 +44,7 @@ project_list.addEventListener("click", (event) => {
   }
 });
 
-task_list.addEventListener("click", (event) => {
+task_list.addEventListener("click", async (event) => {
   // Handle checkbox click
   const checkbox = event.target.closest('.task-checkbox');
   if (checkbox && !event.target.classList.contains('delete-btn')) {
@@ -52,13 +53,20 @@ task_list.addEventListener("click", (event) => {
       let taskId = checkbox.dataset.taskId;
       let projectId = currentProject.id;
       if (taskId !== undefined) {
-        console.log(`Task ID: ${taskId}`);
-        updateTaskStatus(projectId, taskId).then((updatedTask) => {
-          console.log(`Updated Task: ${JSON.stringify(updatedTask)}`);
-          fetchProjectTasks(currentProject.id).then((task_list) => {
-            renderTaskList(task_list);
-          });
-        });
+        //console.log(`Task ID: ${taskId}`);
+        let updatedTask = await updateTaskStatus(projectId, taskId);
+        //console.log(`Updated Task: ${JSON.stringify(updatedTask)}`);
+        if (updatedTask.id == parseInt(taskId) && updatedTask.project_id == parseInt(projectId)) {
+          if (updatedTask.completed) {
+            taskItem.classList.add('completed');
+            taskItem.querySelector('.task-checkbox').innerHTML = '<span class="task-checkbox-check">✓</span>';
+          } else {
+            taskItem.classList.remove('completed');
+            taskItem.querySelector('.task-checkbox').innerHTML = '';
+          }
+        } else {
+          console.error('Failed to update task status');
+        };
       } else {
         console.error("Task ID not found in dataset");
       }
