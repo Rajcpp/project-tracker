@@ -136,7 +136,7 @@ project-tracker/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/project-tracker.git
+   git clone https://github.com/Rajcpp/project-tracker.git
    cd project-tracker
    ```
 
