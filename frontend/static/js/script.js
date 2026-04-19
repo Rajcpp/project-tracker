@@ -11,6 +11,12 @@ import {
 const project_list = document.getElementById("projects-list");
 const task_list = document.getElementById("tasks-list");
 
+onload = () => {
+  if (!localStorage.getItem("token")) {
+    window.location.href = "/login";
+  }
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   fetchProjects().then((projects) => {
     project_list.innerHTML = "";

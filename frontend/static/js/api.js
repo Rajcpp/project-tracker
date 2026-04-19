@@ -1,6 +1,14 @@
+import { getToken } from "./auth";
+
 export async function fetchProjects() {
     try {
-        const response = await fetch('/api/projects');
+        const response = await fetch('/api/projects', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
         const data = await response.json();
         return data;
     } catch (error) {
@@ -11,7 +19,13 @@ export async function fetchProjects() {
 
 export async function fetchProjectTasks(projectId) {
     try {
-        const response = await fetch(`/api/projects/${projectId}`);
+        const response = await fetch(`/api/projects/${projectId}`,{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
         const data = await response.json();
         return data;
     } catch (error) {
@@ -25,7 +39,8 @@ export async function createProject(projectName) {
         const response = await fetch('/api/projects', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({ name: projectName })
         });
@@ -42,7 +57,8 @@ export async function createTask(projectId, taskName) {
         const response = await fetch(`/api/projects/${projectId}/tasks`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({title: taskName })
         });
@@ -62,7 +78,8 @@ export async function updateTaskStatus(projectId, taskId) {
         const response = await fetch(`/api/projects/${projectId}/tasks/${taskId}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({ task_id: taskId })
         });
@@ -80,7 +97,8 @@ export async function deleteProject(projectId) {
         const response = await fetch(`/api/projects/${projectId}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
             }
         });
         const data = await response.json();
@@ -97,7 +115,8 @@ export async function deleteTask(projectId, taskId) {
         const response = await fetch(`/api/projects/${projectId}/tasks/${taskId}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
             }
         });
         const data = await response.json();

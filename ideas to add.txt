@@ -1,0 +1,125 @@
+Step 1: Update Dependencies
+File: requirements.txt
+Add these new packages:
+
+python-jose[cryptography] - for JWT tokens
+passlib[bcrypt] - for password hashing
+python-multipart - for form data handling
+
+Step 2: Create User Model
+File: database/model.py
+Add a User model:
+
+Fields: id, username, email, hashed_password, created_at
+Add a user_id foreign key to the Project model
+Add relationship between User and Project
+
+Step 3: Create Authentication Utilities
+New File: backend/auth.py
+Create functions for:
+
+hash_password(password) - hash passwords with bcrypt
+verify_password(plain_password, hashed_password) - verify passwords
+create_access_token(data) - create JWT tokens
+get_current_user(token) - decode JWT and return current user
+Token configuration (SECRET_KEY, ALGORITHM, expiration time)
+
+Step 4: Create Authentication Schemas
+File: backend/struct.py
+Add new Pydantic models:
+
+UserCreate - for registration (username, email, password)
+UserLogin - for login (username/email, password)
+Token - for token response (access_token, token_type)
+UserResponse - for user data (id, username, email)
+
+Step 5: Add Auth Functions
+File: backend/functions.py
+Add new database functions:
+
+create_user(db, username, email, hashed_password)
+get_user_by_username(db, username)
+get_user_by_email(db, email)
+get_user_by_id(db, user_id)
+
+Modify existing functions to filter by user_id:
+
+get_projects(db, user_id) - only return user's projects
+create_project(db, name, user_id) - associate project with user
+
+Step 6: Add Auth Routes
+File: backend/api.py
+Add new endpoints:
+
+POST /api/auth/register - user registration
+POST /api/auth/login - user login
+GET /api/auth/me - get current user info
+
+Protect existing routes:
+
+Add current_user = Depends(get_current_user) to all project/task routes
+Pass user_id to database functions
+
+Step 7: Frontend - Login/Register Pages
+New File: frontend/templates/login.html
+Create login page with:
+
+Login form (username/email, password)
+Link to register page
+
+New File: frontend/templates/register.html
+Create registration page with:
+
+Registration form (username, email, password, confirm password)
+Link to login page
+
+Step 8: Frontend - Auth JavaScript
+New File: frontend/static/js/auth.js
+Create functions for:
+
+login(username, password) - POST to /api/auth/login, store token
+register(username, email, password) - POST to /api/auth/register
+logout() - clear token from localStorage
+getToken() - retrieve token from localStorage
+isAuthenticated() - check if user has valid token
+
+Step 9: Update API Calls
+File: frontend/static/js/api.js
+Modify all fetch calls to include Authorization header:
+javascriptheaders: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${getToken()}`
+}
+Step 10: Add Route Protection
+File: backend/api.py
+Update the root route:
+
+If user is authenticated → serve index.html
+If not authenticated → redirect to login.html
+
+File: frontend/static/js/script.js
+Add check on page load:
+
+If not authenticated → redirect to login page
+Add logout button in header
+
+Step 11: Database Migration
+After creating the User model:
+
+Delete projects.db (or backup your data)
+Run python -m database.init_db to recreate tables
+
+Recommended Order:
+
+Backend first: Models → Auth utils → Schemas → Functions → Routes
+Test with Postman/curl: Register, login, protected endpoints
+Frontend: Login page → Register page → Auth JS → Update existing JS
+Integration: Connect everything and test
+
+Key Security Points:
+
+Never store plain passwords
+Use environment variables for SECRET_KEY (don't hardcode it)
+Set appropriate token expiration (e.g., 30 minutes to 7 days)
+Use HTTPS in production
+Add CORS middleware if needed
