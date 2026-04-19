@@ -9,6 +9,8 @@ import {
   renderTaskList,
   currentProject,
   showEmptyState,
+  UpdateTotalProjects,
+  UpdateTotalTasks,
 } from "./components.js";
 
 const project_list = document.getElementById("projects-list");
@@ -100,6 +102,7 @@ function showProjectConfirmation(projectItem, projectId, projectName) {
       if (isdeleted.success) {
         // immediately remove the project from the list without re-fetching
         projectItem.remove();
+        UpdateTotalProjects(document.getElementById("projects-list").children.length);
       } else {
         // Re-fetch and render projects
         const projects = await fetchProjects();
@@ -164,7 +167,9 @@ function showTaskConfirmation(taskItem, taskId, taskTitle) {
 
       if (isdeleted.success) {
         // immediately remove the task from the list without re-fetching
+        
         taskItem.remove();
+        UpdateTotalTasks(document.getElementById("tasks-list").children.length);
       } else {
         // Re-fetch and render tasks
         const tasks = await fetchProjectTasks(currentProject.id);
