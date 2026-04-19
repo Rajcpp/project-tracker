@@ -8,6 +8,7 @@ import {
   renderTaskList,
   addProject,
   addTask,
+  toggleLoading,
 } from "./components.js";
 import { getToken, checkAuth } from "./auth.js";
 
@@ -57,13 +58,10 @@ task_list.addEventListener("click", async (event) => {
         let updatedTask = await updateTaskStatus(projectId, taskId);
         //console.log(`Updated Task: ${JSON.stringify(updatedTask)}`);
         if (updatedTask.id == parseInt(taskId) && updatedTask.project_id == parseInt(projectId)) {
-          if (updatedTask.completed) {
-            taskItem.classList.add('completed');
-            taskItem.querySelector('.task-checkbox').innerHTML = '<span class="task-checkbox-check">✓</span>';
-          } else {
-            taskItem.classList.remove('completed');
-            taskItem.querySelector('.task-checkbox').innerHTML = '';
-          }
+          task_list.innerHTML = "";
+          toggleLoading(true);
+          renderTaskList(await fetchProjectTasks(projectId));
+          toggleLoading(false);
         } else {
           console.error('Failed to update task status');
         };
@@ -77,4 +75,8 @@ task_list.addEventListener("click", async (event) => {
 document.getElementById("logout-btn").addEventListener("click", () => {
   localStorage.removeItem("token");
   window.location.href = "/";
+});
+
+document.getElementById("refresh-btn").addEventListener("click", () => {
+  window.location.reload();
 });

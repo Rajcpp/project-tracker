@@ -11,6 +11,9 @@ import {
   showEmptyState,
   UpdateTotalProjects,
   UpdateTotalTasks,
+  total,
+  renderTotals,
+  toggleLoading,
 } from "./components.js";
 
 const project_list = document.getElementById("projects-list");
@@ -102,12 +105,15 @@ function showProjectConfirmation(projectItem, projectId, projectName) {
       if (isdeleted.success) {
         // immediately remove the project from the list without re-fetching
         projectItem.remove();
-        UpdateTotalProjects(document.getElementById("projects-list").children.length);
+        total.projects--;
+        UpdateTotalProjects();
       } else {
         // Re-fetch and render projects
         const projects = await fetchProjects();
         renderProjectList(projects);
+        
       }
+      renderTotals();
     } catch (error) {
       console.error("Error deleting project:", error);
       // Restore original content on error
@@ -164,17 +170,21 @@ function showTaskConfirmation(taskItem, taskId, taskTitle) {
     e.stopPropagation();
     try {
       let isdeleted = await deleteTask(currentProject.id, taskId);
-
+      toggleLoading(true);
       if (isdeleted.success) {
         // immediately remove the task from the list without re-fetching
         
         taskItem.remove();
-        UpdateTotalTasks(document.getElementById("tasks-list").children.length);
+        total.tasks--;
+        UpdateTotalTasks();
       } else {
         // Re-fetch and render tasks
         const tasks = await fetchProjectTasks(currentProject.id);
         renderTaskList(tasks);
       }
+      renderTotals();
+      toggleLoading(false);
+
     } catch (error) {
       console.error("Error deleting task:", error);
       // Restore original content on error

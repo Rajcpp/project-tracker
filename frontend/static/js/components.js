@@ -1,19 +1,20 @@
 export let currentProject = { id: null, name: null };
+export let total = { projects: 0, tasks: 0 };
 
 export function renderProjectList(projects) {
+    total.projects = 0;
     const project_list = document.getElementById('projects-list');
     project_list.innerHTML = '';
-    UpdateTotalProjects(projects.length);
     projects.forEach(project => {
+        total.projects++;
         addProject(project);
     });
 }
 
 export function renderTaskList(tasks) {
+    total.tasks = 0;
     const task_list = document.getElementById('tasks-list');
     task_list.innerHTML = '';
-    let uncompletedCount = tasks.filter(task => !task.completed).length;
-    UpdateTotalTasks(uncompletedCount);
     tasks.forEach(task => {
         addTask(task);
     });
@@ -23,12 +24,17 @@ export function CurrentprojectNameRender() {
     document.getElementById("current-project-title").textContent = currentProject.name;
 }
 
-export function UpdateTotalTasks(num) {
-    document.getElementById("total-tasks").textContent = num;
+export function UpdateTotalTasks() {
+    document.getElementById("total-tasks").textContent = total.tasks;
 }
 
-export function UpdateTotalProjects(num) {
-    document.getElementById("total-projects").textContent = num;
+export function UpdateTotalProjects() {
+    document.getElementById("total-projects").textContent = total.projects;
+}
+
+export function renderTotals() {
+    UpdateTotalProjects();
+    UpdateTotalTasks();
 }
 
 export function hideEmptyState() {
@@ -84,8 +90,12 @@ export function addTask(task) {
         checkMark.className = 'task-checkbox-check';
         checkMark.textContent = '✓';
         checkBox.appendChild(checkMark);
+        
     }
-    
+    if (!task.completed) {
+        checkBox.innerHTML = '';
+        total.tasks++;
+    }
     const taskTitle = document.createElement('span');
     taskTitle.textContent = task.title;
     taskTitle.className = 'task-title';
@@ -105,6 +115,7 @@ export function addTask(task) {
     taskItem.appendChild(taskContent);
     taskItem.appendChild(deleteBtn);
     task_list.appendChild(taskItem);
+    UpdateTotalTasks();
 }
 
 export function addProject(project) {
@@ -129,5 +140,24 @@ export function addProject(project) {
     const project_list = document.getElementById('projects-list');
     projectItem.appendChild(projectContent);
     projectItem.appendChild(deleteBtn);
+    
     project_list.appendChild(projectItem);
+    UpdateTotalProjects();
+}
+
+export async function toggleLoading(isloading) {
+    // instead of just showing a loading text, we can disable the task list and show a spinner or loading indicator
+    if (isloading) {
+        const task_list = document.getElementById('tasks-list');
+        const loadingItem = document.createElement('li');
+        loadingItem.className = 'loading';
+        loadingItem.textContent = 'Updating...';
+        task_list.appendChild(loadingItem);
+    } else {
+        const task_list = document.getElementById('tasks-list');
+        const loadingItem = task_list.querySelector('.loading');
+        if (loadingItem) {
+            loadingItem.remove();
+        }
+    }
 }

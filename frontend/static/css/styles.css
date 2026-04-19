@@ -952,6 +952,12 @@ body {
     border-width: 0;
 }
 
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    user-select: none;
+}
+
 /* ===== Loading States ===== */
 @keyframes shimmer {
     0% {

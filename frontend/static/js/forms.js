@@ -14,6 +14,9 @@ import {
     hideTaskForm,
     addProject,
     addTask,
+    UpdateTotalProjects,
+    total,
+        UpdateTotalTasks,
 } from "./components.js";
 
 document.getElementById("add-project-btn").addEventListener("click", () => {
@@ -40,7 +43,9 @@ document.getElementById("save-project-btn").addEventListener("click", async () =
         let createdProject = await createProject(projectName);
         document.getElementById("new-project-input").value = "";
         if (createdProject) {
+            total.projects++;
             addProject(createdProject);
+            UpdateTotalProjects();
         } else {
             // Optionally, you can refresh the project list if the API doesn't return the created project
             fetchProjects().then((projects) => {
@@ -56,7 +61,9 @@ document.getElementById("save-task-btn").addEventListener("click", async () => {
         let createdTask = await createTask(currentProject.id, taskName);
         document.getElementById("new-task-input").value = "";
         if (createdTask) {
+            total.tasks++;
             addTask(createdTask);
+            UpdateTotalTasks();
         } else {
             // Optionally, you can refresh the task list if the API doesn't return the created task
             fetchProjectTasks(currentProject.id).then((tasks) => {
