@@ -2,9 +2,17 @@
 
 A full-stack project management application with user authentication, project organization, and task tracking capabilities. Built with FastAPI, SQLAlchemy, and vanilla JavaScript.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20App-brightgreen?style=for-the-badge)](https://project-tracker-production-ca3f.up.railway.app)
+
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green.svg)
+
+## 🚀 Live Demo
+
+**[👉 Try it here: project-tracker-production-ca3f.up.railway.app](https://project-tracker-production-ca3f.up.railway.app)**
+
+> You can register a new account and start creating projects and tasks right away.
 
 ## Table of Contents
 
@@ -136,7 +144,7 @@ project-tracker/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/project-tracker.git
+   git clone https://github.com/Rajcpp/project-tracker.git
    cd project-tracker
    ```
 
@@ -234,50 +242,37 @@ project-tracker/
 #### 1. Database Performance
 **Current State**: Single SQLite file with synchronous queries
 **Potential Improvements**:
-- **Database Indexing**: Add composite indexes on `(user_id, created_at)` for faster project/task queries
-- **Connection Pooling**: Implement proper connection pooling for concurrent requests
-- **Query Optimization**: Use `joinedload()` to prevent N+1 queries when fetching projects with tasks
-- **Pagination**: Add limit/offset for users with many projects
-- **Database Upgrade**: Move to PostgreSQL for production use
+- **Connection Pooling**: Use SQLAlchemy connection pools
+- **Async ORM**: Switch to async SQLAlchemy with asyncpg
+- **PostgreSQL**: Migrate for better concurrency and performance
+- **Indexing**: Add indexes on user_id and project_id foreign keys
+- **Query Optimization**: Use eager loading to reduce N+1 queries
 
-```python
-# Example improvement
-projects = db.query(Project)\
-    .options(joinedload(Project.tasks))\
-    .filter(Project.user_id == user_id)\
-    .limit(50)\
-    .all()
-```
-
-#### 2. Caching Layer
+#### 2. API Performance
+**Current State**: Synchronous FastAPI endpoints
 **Potential Improvements**:
-- **Redis Cache**: Cache user projects and tasks (5-minute TTL)
-- **Response Caching**: Use FastAPI's cache decorators for repeated queries
-- **ETags**: Implement HTTP ETags to reduce unnecessary transfers
+- **Async Endpoints**: Convert to async/await pattern
+- **Response Caching**: Cache frequently accessed data
+- **Pagination**: Add cursor-based pagination for large datasets
+- **Compression**: Enable gzip compression for responses
 
-#### 3. API Response Optimization
-**Current State**: Full object serialization
+#### 3. Security Hardening
+**Current State**: Basic JWT implementation
 **Potential Improvements**:
-- **Field Selection**: Allow clients to specify needed fields (`?fields=id,name`)
-- **Response Compression**: Enable gzip compression middleware
-- **Batch Operations**: Add endpoints for bulk task updates
-
-#### 4. Authentication
-**Current State**: JWT verification on every request
-**Potential Improvements**:
-- **Token Caching**: Cache decoded tokens temporarily
-- **Refresh Tokens**: Implement refresh token rotation
-- **Rate Limiting**: Add rate limiting to prevent brute force attacks
+- **Rate Limiting**: Add slowapi for request throttling
+- **Refresh Tokens**: Implement token refresh mechanism
+- **Environment Variables**: Move secrets to .env files
+- **Input Sanitization**: Enhanced XSS prevention
 
 ### Frontend Optimizations
 
-#### 1. Bundle Optimization
-**Current State**: Separate JS modules loaded individually
+#### 1. Bundle & Load Performance
+**Current State**: Multiple individual JS files
 **Potential Improvements**:
-- **Module Bundling**: Use Rollup/Webpack to bundle JS files
-- **Minification**: Minify CSS and JS for production
-- **Code Splitting**: Lazy load authentication vs. app code
-- **Tree Shaking**: Remove unused code
+- **Bundling**: Use Vite or esbuild for production builds
+- **Code Splitting**: Load modules on demand
+- **Minification**: Compress CSS and JS for production
+- **Asset Hashing**: Cache-busting for static assets
 
 #### 2. Performance
 **Current State**: Direct DOM manipulation
