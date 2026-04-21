@@ -453,7 +453,7 @@ project-tracker/
 - [ ] Email verification for registration
 - [ ] Password reset functionality
 - [ ] Task due dates and reminders
-- [ ] Task priority levels (high/medium/low)
+- [X] Task priority levels (high/medium/low)
 - [ ] Search and filter tasks
 - [ ] Project sharing/collaboration
 - [ ] Dark/light theme toggle
