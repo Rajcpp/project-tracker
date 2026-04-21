@@ -37,6 +37,14 @@ export function renderTotals() {
     UpdateTotalTasks();
 }
 
+export function showLoadingScreen() {
+    document.getElementById('loading-screen').classList.remove('hidden');
+}
+
+export function hideLoadingScreen() {
+    document.getElementById('loading-screen').classList.add('hidden');
+}
+
 export function hideEmptyState() {
     document.getElementById('empty-state').classList.add('hidden');
     document.getElementById('project-view').classList.remove('hidden');
@@ -99,7 +107,10 @@ export function addTask(task) {
     const taskTitle = document.createElement('span');
     taskTitle.textContent = task.title;
     taskTitle.className = 'task-title';
-    
+    const priorityIndicator = document.createElement('span');
+    priorityIndicator.className = `task-priority ${task.priority}`;
+    priorityIndicator.textContent = task.priority.charAt(0).toUpperCase() + task.priority.slice(1);
+    taskContent.appendChild(priorityIndicator);
     taskContent.appendChild(checkBox);
     taskContent.appendChild(taskTitle);
     
@@ -140,7 +151,7 @@ export function addProject(project) {
     const project_list = document.getElementById('projects-list');
     projectItem.appendChild(projectContent);
     projectItem.appendChild(deleteBtn);
-    
+    total.projects++;
     project_list.appendChild(projectItem);
     UpdateTotalProjects();
 }

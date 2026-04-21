@@ -9,6 +9,8 @@ import {
   addProject,
   addTask,
   toggleLoading,
+  showLoadingScreen,
+  hideLoadingScreen,
 } from "./components.js";
 import { getToken, checkAuth } from "./auth.js";
 
@@ -49,6 +51,7 @@ task_list.addEventListener("click", async (event) => {
   // Handle checkbox click
   const checkbox = event.target.closest('.task-checkbox');
   if (checkbox && !event.target.classList.contains('delete-btn')) {
+    showLoadingScreen();
     const taskItem = checkbox.closest('.task-item');
     if (!taskItem.classList.contains('confirming')) {
       let taskId = checkbox.dataset.taskId;
@@ -62,11 +65,12 @@ task_list.addEventListener("click", async (event) => {
           toggleLoading(true);
           renderTaskList(await fetchProjectTasks(projectId));
           toggleLoading(false);
+          hideLoadingScreen();
         } else {
-          console.error('Failed to update task status');
+          alert('Failed to update task status');
         };
       } else {
-        console.error("Task ID not found in dataset");
+        alert("Task ID not found in dataset");
       }
     }
   }

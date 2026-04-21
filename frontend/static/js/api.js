@@ -52,7 +52,8 @@ export async function createProject(projectName) {
     }
 }
 
-export async function createTask(projectId, taskName) {
+export async function createTask(projectId, taskName, taskPriority) {
+    console.log(`Creating task with name: ${taskName}, priority: ${taskPriority} in project ID: ${projectId}`);
     try {
         const response = await fetch(`/api/projects/${projectId}/tasks`, {
             method: 'POST',
@@ -60,7 +61,7 @@ export async function createTask(projectId, taskName) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getToken()}`
             },
-            body: JSON.stringify({title: taskName })
+            body: JSON.stringify({title: taskName ,priority: taskPriority})
         });
         const data = await response.json();
         return data;
@@ -73,7 +74,7 @@ export async function createTask(projectId, taskName) {
 
 export async function updateTaskStatus(projectId, taskId) {
     //console.log(`Updating task status for Task ID: ${taskId} in Project ID: ${projectId}`);
-    //console.log(`url: /api/projects/${projectId}/tasks/${taskId}`);
+    //console.log(`url: /api/projects/${projectId}/tasks/${taskId}`)
     try {
         const response = await fetch(`/api/projects/${projectId}/tasks/${taskId}`, {
             method: 'PUT',

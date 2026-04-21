@@ -71,7 +71,7 @@ def delete_task(project_id: int, task_id: int, db: Session = Depends(db_function
 
 @app.post("/api/projects/{project_id}/tasks")
 def create_task(project_id: int, task: TaskCreate, db: Session = Depends(db_functions.get_db), user_id: int = Depends(get_current_user)):
-    return db_functions.create_task(db=db, project_id=project_id, title=task.title)
+    return db_functions.create_task(db=db, project_id=project_id, title=task.title,priority=task.priority)
 
 @app.get("/api/projects/{project_id}")
 def get_tasks(project_id: int, db: Session = Depends(db_functions.get_db), user_id: int = Depends(get_current_user)):

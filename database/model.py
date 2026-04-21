@@ -18,6 +18,7 @@ class Task(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     completed = Column(Boolean, default=False)
+    priority = Column(String, index=True)  # Added priority field
 
     project_id = Column(Integer, ForeignKey('projects.id'))
     project = relationship("Project", back_populates="tasks")  

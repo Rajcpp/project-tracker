@@ -16,7 +16,7 @@ import {
     addTask,
     UpdateTotalProjects,
     total,
-        UpdateTotalTasks,
+    UpdateTotalTasks,
 } from "./components.js";
 
 document.getElementById("add-project-btn").addEventListener("click", () => {
@@ -43,7 +43,6 @@ document.getElementById("save-project-btn").addEventListener("click", async () =
         let createdProject = await createProject(projectName);
         document.getElementById("new-project-input").value = "";
         if (createdProject) {
-            total.projects++;
             addProject(createdProject);
             UpdateTotalProjects();
         } else {
@@ -55,13 +54,24 @@ document.getElementById("save-project-btn").addEventListener("click", async () =
     }
 });
 
+const Priority = Object.freeze({
+    LOW: "low",
+    MEDIUM: "medium",
+    HIGH: "high",
+});
+
 document.getElementById("save-task-btn").addEventListener("click", async () => {
     const taskName = document.getElementById("new-task-input").value.trim();
+    const priority = document.getElementById("task-priority").value;
+    console.log("Selected priority:", priority);
+    if (!Object.values(Priority).includes(priority)) {
+        alert("Invalid priority selected. Please choose low, medium, or high.");
+        return;
+    }
     if (taskName && currentProject.id) {
-        let createdTask = await createTask(currentProject.id, taskName);
+        let createdTask = await createTask(currentProject.id, taskName, priority);
         document.getElementById("new-task-input").value = "";
         if (createdTask) {
-            total.tasks++;
             addTask(createdTask);
             UpdateTotalTasks();
         } else {

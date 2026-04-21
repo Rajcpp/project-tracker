@@ -20,8 +20,8 @@ def create_project(db, name: str, user_id: int):
     db.refresh(project)
     return project
 
-def create_task(db: Session,project_id: int, title: str):
-    task = Task(title=title, project_id=project_id)
+def create_task(db: Session,project_id: int, title: str, priority: str):
+    task = Task(title=title, project_id=project_id, priority=priority)
     db.add(task)
     db.commit()
     db.refresh(task)

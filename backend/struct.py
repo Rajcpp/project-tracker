@@ -1,9 +1,16 @@
 from typing import List
 from pydantic import BaseModel
+from enum import Enum
+
+class Priority(str, Enum):
+    low = "low"
+    medium = "medium"
+    high = "high"
 
 class Task(BaseModel):
     id: int
     title: str
+    priority: Priority
     completed: bool
 
 class Project(BaseModel):
@@ -31,6 +38,7 @@ class UserResponse(BaseModel):
     
 class TaskCreate(BaseModel):
     title: str
+    priority: Priority
 
 class ProjectCreate(BaseModel):
     name: str
