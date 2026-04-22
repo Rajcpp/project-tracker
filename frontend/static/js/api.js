@@ -1,4 +1,5 @@
 import { getToken } from "./auth.js";
+import { Default } from "./components.js";
 
 export async function fetchProjects() {
     try {
@@ -12,6 +13,7 @@ export async function fetchProjects() {
         const data = await response.json();
         return data;
     } catch (error) {
+        Default();
         console.error('Error fetching projects:', error);
         throw error;
     }
@@ -29,6 +31,7 @@ export async function fetchProjectTasks(projectId) {
         const data = await response.json();
         return data;
     } catch (error) {
+        Default();
         console.error('Error fetching project tasks:', error);
         throw error;
     }
@@ -47,13 +50,14 @@ export async function createProject(projectName) {
         const data = await response.json();
         return data;
     } catch (error) {
+        Default();
         console.error('Error creating project:', error);
         throw error;
     }
 }
 
 export async function createTask(projectId, taskName, taskPriority) {
-    console.log(`Creating task with name: ${taskName}, priority: ${taskPriority} in project ID: ${projectId}`);
+    //console.log(`Creating task with name: ${taskName}, priority: ${taskPriority} in project ID: ${projectId}`);
     try {
         const response = await fetch(`/api/projects/${projectId}/tasks`, {
             method: 'POST',
@@ -67,6 +71,7 @@ export async function createTask(projectId, taskName, taskPriority) {
         return data;
     }
     catch (error) {
+        Default();
         console.error('Error creating task:', error);
         throw error;
     }
@@ -88,8 +93,10 @@ export async function updateTaskStatus(projectId, taskId) {
         return data;
     }
     catch (error) {
+        Default();
         console.error('Error updating task status:', error);
         throw error;
+        return {code: 400}
     }
 }
 
@@ -106,6 +113,7 @@ export async function deleteProject(projectId) {
         return data;
     }
     catch (error) {
+        Default();
         console.error('Error deleting project:', error);
         throw error;
     }
@@ -124,6 +132,7 @@ export async function deleteTask(projectId, taskId) {
         return data;
     }
     catch (error) {
+        Default();
         console.error('Error deleting task:', error);
         throw error;
     }

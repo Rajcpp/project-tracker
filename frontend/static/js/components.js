@@ -6,7 +6,6 @@ export function renderProjectList(projects) {
     const project_list = document.getElementById('projects-list');
     project_list.innerHTML = '';
     projects.forEach(project => {
-        total.projects++;
         addProject(project);
     });
 }
@@ -75,6 +74,7 @@ export function Default() {
     showEmptyState();
     hideProjectForm();
     hideTaskForm();
+    hideLoadingScreen();
     currentProject = { id: null, name: null };
 }
 

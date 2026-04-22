@@ -59,6 +59,10 @@ task_list.addEventListener("click", async (event) => {
       if (taskId !== undefined) {
         //console.log(`Task ID: ${taskId}`);
         let updatedTask = await updateTaskStatus(projectId, taskId);
+        if (updatedTask.code) {
+          hideLoadingScreen();
+          alert("failed");
+        }
         //console.log(`Updated Task: ${JSON.stringify(updatedTask)}`);
         if (updatedTask.id == parseInt(taskId) && updatedTask.project_id == parseInt(projectId)) {
           task_list.innerHTML = "";
@@ -68,9 +72,11 @@ task_list.addEventListener("click", async (event) => {
           hideLoadingScreen();
         } else {
           alert('Failed to update task status');
+          hideLoadingScreen();
         };
       } else {
         alert("Task ID not found in dataset");
+        hideLoadingScreen();
       }
     }
   }
